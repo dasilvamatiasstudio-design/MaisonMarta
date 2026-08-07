@@ -953,7 +953,7 @@
 
   /* Constant scroll: fixed step per mouse-wheel notch (independent of the OS mouse-speed
      settings), and native smooth scrolling left untouched for trackpads / fine wheels. */
-  var WHEEL_STEP = 100;   // px moved per mouse-wheel notch (raise = faster, lower = slower)
+  var WHEEL_STEP = 140;   // px moved per mouse-wheel notch (raise = faster, lower = slower)
   window.addEventListener("wheel", function(e){
     if(reduce) return;
     if(!document.body.classList.contains("entered")) return;   // let the intro drive the wheel
