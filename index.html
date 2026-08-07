@@ -951,18 +951,21 @@
   function onScroll(){ if(!pScheduled){ pScheduled = true; requestAnimationFrame(applyScroll); } }
   applyScroll(); window.addEventListener("scroll", onScroll, {passive:true});
 
-  /* Slower wheel scroll (smaller step per notch) — instant, no easing/latency */
-  var SCROLL_FACTOR = 0.62;   // <1 = slower ; 1 = native
+  /* Constant scroll: fixed step per mouse-wheel notch (independent of the OS mouse-speed
+     settings), and native smooth scrolling left untouched for trackpads / fine wheels. */
+  var WHEEL_STEP = 70;   // px moved per mouse-wheel notch (raise = faster, lower = slower)
   window.addEventListener("wheel", function(e){
     if(reduce) return;
     if(!document.body.classList.contains("entered")) return;   // let the intro drive the wheel
     if(e.ctrlKey) return;                                       // leave pinch/zoom native
     var dy = e.deltaY;
-    if(e.deltaMode === 1) dy *= 32;                             // Firefox: lines -> px
+    if(e.deltaMode === 1) dy *= 32;                             // lines -> px (Firefox)
     else if(e.deltaMode === 2) dy *= (window.innerHeight * 0.9);// pages -> px
-    if(dy < 0 && window.scrollY <= 6) return;                   // let the very top collapse to the intro
+    if(Math.abs(dy) < 40) return;                              // trackpad / fine scroll → keep native (smooth, not slowed)
+    var move = (dy < 0 ? -1 : 1) * WHEEL_STEP;                 // mouse notch → fixed distance, whatever the OS speed
+    if(move < 0 && window.scrollY <= 6) return;               // let the very top collapse to the intro
     e.preventDefault();
-    window.scrollBy(0, dy * SCROLL_FACTOR);
+    window.scrollBy(0, move);
   }, {passive:false});
 
   /* smooth in-page scrolling for nav links + hero CTAs (offsets the fixed nav) */
