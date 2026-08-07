@@ -956,10 +956,13 @@
   window.addEventListener("wheel", function(e){
     if(reduce) return;
     if(!document.body.classList.contains("entered")) return;   // let the intro drive the wheel
-    if(e.ctrlKey || e.deltaMode !== 0) return;                 // leave zoom / line-page modes native
-    if(e.deltaY < 0 && window.scrollY <= 6) return;            // let the very top collapse to the intro
+    if(e.ctrlKey) return;                                       // leave pinch/zoom native
+    var dy = e.deltaY;
+    if(e.deltaMode === 1) dy *= 32;                             // Firefox: lines -> px
+    else if(e.deltaMode === 2) dy *= (window.innerHeight * 0.9);// pages -> px
+    if(dy < 0 && window.scrollY <= 6) return;                   // let the very top collapse to the intro
     e.preventDefault();
-    window.scrollBy(0, e.deltaY * SCROLL_FACTOR);
+    window.scrollBy(0, dy * SCROLL_FACTOR);
   }, {passive:false});
 
   /* smooth in-page scrolling for nav links + hero CTAs (offsets the fixed nav) */
