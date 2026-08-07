@@ -952,12 +952,11 @@
   applyScroll(); window.addEventListener("scroll", onScroll, {passive:true});
 
   /* Slower wheel scroll (smaller step per notch) — instant, no easing/latency */
-  var SCROLL_FACTOR = 0.75;   // <1 = slower ; 1 = native
+  var SCROLL_FACTOR = 0.62;   // <1 = slower ; 1 = native
   window.addEventListener("wheel", function(e){
     if(reduce) return;
     if(!document.body.classList.contains("entered")) return;   // let the intro drive the wheel
     if(e.ctrlKey || e.deltaMode !== 0) return;                 // leave zoom / line-page modes native
-    if(Math.abs(e.deltaY) < 50) return;                        // leave trackpad / smooth scroll native (Mac)
     if(e.deltaY < 0 && window.scrollY <= 6) return;            // let the very top collapse to the intro
     e.preventDefault();
     window.scrollBy(0, e.deltaY * SCROLL_FACTOR);
