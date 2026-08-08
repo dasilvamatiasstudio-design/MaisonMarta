@@ -753,17 +753,17 @@
               </div>
             </div>
             <div class="reach__slide" data-slide="1">
-              <div class="reach__mask"><div class="reach__num" data-to="48" data-suffix="M">0<span class="u">M</span></div></div>
+              <div class="reach__mask"><div class="reach__num" data-to="48" data-suffix="M" data-dash="1">0<span class="u">M</span></div></div>
               <div class="reach__meta">
                 <div class="reach__label">Monthly Impressions</div>
                 <p class="reach__cap">Sustained monthly impressions.</p>
               </div>
             </div>
             <div class="reach__slide" data-slide="2">
-              <div class="reach__mask"><div class="reach__num" data-to="6.5" data-suffix="%">0<span class="u">%</span></div></div>
+              <div class="reach__mask"><div class="reach__num" data-to="6.5" data-suffix="%" data-dash="1">0<span class="u">%</span></div></div>
               <div class="reach__meta">
                 <div class="reach__label">Engagement Rate</div>
-                <p class="reach__cap">Over fivefold above the 1.2% luxury benchmark.</p>
+                <p class="reach__cap"></p>
               </div>
             </div>
           </div>
@@ -1039,6 +1039,9 @@
 
     function pad(n){ n=String(n); return n.length<2 ? "0"+n : n; }
     function setNum(el, animate){
+      if(el.getAttribute("data-dash")==="1"){
+        el.innerHTML='—<span class="u">'+(el.getAttribute("data-suffix")||"")+'</span>'; return;
+      }
       var to=parseFloat(el.getAttribute("data-to")), suffix=el.getAttribute("data-suffix")||"",
           dec=(to%1!==0)?1:0;
       if(!animate){ el.innerHTML=to.toFixed(dec)+'<span class="u">'+suffix+'</span>'; return; }
